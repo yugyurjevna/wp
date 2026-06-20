@@ -3,7 +3,7 @@ Contributors: konard
 Tags: custom post type, media, blog
 Requires at least: 5.0
 Tested up to: 6.5
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,6 +29,10 @@ Adds a new "Media" (Медиа) section that fully duplicates the blog functiona
 * **Поддержка Brizy.** Тип `media` добавляется в список поддерживаемых Brizy
   типов записей через фильтр `brizy_supported_post_types`, поэтому медиа
   редактируются конструктором так же, как посты.
+* **Готовые статьи.** При активации раздел автоматически наполняется пятью
+  статьями (с той же вёрсткой страниц постов, что и у блога): о Юлии
+  Голубковой, об обучении ИИ и три рекламные статьи компании «Цифровые
+  структуры». Наполнение идемпотентно — повторный запуск не создаёт дубликаты.
 
 == Installation ==
 
@@ -39,11 +43,17 @@ Adds a new "Media" (Медиа) section that fully duplicates the blog functiona
 
 == Testing ==
 
-Юнит-тест без зависимостей:
+Юнит-тесты без зависимостей:
 
     php tests/test-media-section.php
+    php tests/test-media-articles.php
 
 == Changelog ==
+
+= 1.1.0 =
+* Автоматическое наполнение раздела «Медиа» пятью статьями (Юлия Голубкова,
+  обучение ИИ и три рекламные статьи «Цифровых структур»). Наполнение
+  идемпотентно. Добавлен тест tests/test-media-articles.php.
 
 = 1.0.0 =
 * Первый выпуск: раздел «Медиа», копирующий функционал блога.

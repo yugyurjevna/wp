@@ -75,6 +75,64 @@ function _x( $text, $context, $domain = 'default' ) {
 }
 
 // ---------------------------------------------------------------------------
+// Stubs for the article seeder that runs on the `init` hook. This test only
+// cares about post-type/taxonomy registration, so the seeder is allowed to run
+// against in-memory stores without asserting on it (see test-media-articles.php).
+// ---------------------------------------------------------------------------
+
+$GLOBALS['__options']  = array();
+$GLOBALS['__posts']    = array();
+$GLOBALS['__postmeta'] = array();
+$GLOBALS['__next_id']  = 1;
+
+function get_option( $name, $default = false ) {
+	return isset( $GLOBALS['__options'][ $name ] ) ? $GLOBALS['__options'][ $name ] : $default;
+}
+
+function update_option( $name, $value ) {
+	$GLOBALS['__options'][ $name ] = $value;
+	return true;
+}
+
+function is_wp_error( $thing ) {
+	return false;
+}
+
+function wp_insert_post( $postarr, $wp_error = false ) {
+	$id = $GLOBALS['__next_id']++;
+	$GLOBALS['__posts'][ $id ] = $postarr;
+	return $id;
+}
+
+function update_post_meta( $post_id, $key, $value ) {
+	$GLOBALS['__postmeta'][ $post_id ][ $key ] = $value;
+	return true;
+}
+
+function get_posts( $args ) {
+	$key   = isset( $args['meta_key'] ) ? $args['meta_key'] : null;
+	$value = isset( $args['meta_value'] ) ? $args['meta_value'] : null;
+	foreach ( $GLOBALS['__postmeta'] as $id => $meta ) {
+		if ( $key && isset( $meta[ $key ] ) && $meta[ $key ] === $value ) {
+			return array( $id );
+		}
+	}
+	return array();
+}
+
+function term_exists( $term, $taxonomy = '' ) {
+	return null;
+}
+
+function wp_insert_term( $term, $taxonomy, $args = array() ) {
+	return array( 'term_id' => 1 );
+}
+
+function wp_set_object_terms( $object_id, $terms, $taxonomy, $append = false ) {
+	return (array) $terms;
+}
+
+// ---------------------------------------------------------------------------
 // Tiny assertion helpers.
 // ---------------------------------------------------------------------------
 
