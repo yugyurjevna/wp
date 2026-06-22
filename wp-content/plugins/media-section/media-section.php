@@ -3,7 +3,7 @@
  * Plugin Name: Media Section
  * Plugin URI:  https://github.com/yugyurjevna/wp
  * Description: Добавляет новый раздел «Медиа», который полностью копирует функционал блога: та же вёрстка страниц постов (через шаблоны темы) и те же функции создания статей (редактор, рубрики, метки, изображение записи, комментарии, Brizy).
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author:      konard
  * License:     GPL-2.0-or-later
  * Text Domain: media-section
@@ -33,6 +33,11 @@ define( 'MEDIA_SECTION_CATEGORY', 'media_category' );
  * Non-hierarchical taxonomy that mirrors blog "tags" (Метки) for media.
  */
 define( 'MEDIA_SECTION_TAG', 'media_tag' );
+
+/**
+ * Load the seeder that populates the «Медиа» section with its articles.
+ */
+require_once __DIR__ . '/media-section-articles.php';
 
 /**
  * Register the "Media" custom post type.
@@ -209,6 +214,7 @@ add_filter( 'brizy_supported_post_types', 'media_section_brizy_support' );
 function media_section_activate() {
 	media_section_register_taxonomies();
 	media_section_register_post_type();
+	media_section_seed_articles();
 	flush_rewrite_rules();
 }
 register_activation_hook( __FILE__, 'media_section_activate' );
